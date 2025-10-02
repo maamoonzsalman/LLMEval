@@ -10,7 +10,7 @@ router = APIRouter(
 class GenerateRequest(BaseModel):
     system_prompt: str = Field(..., min_length = 1)
     test_prompt: str = Field(..., min_length = 1)
-    max_output_tokens: int = Field(256, ge=1, le=4096)
+    max_output_tokens: int = Field(256, ge = 1, le = 4096)
 
 class GenerateResponse(BaseModel):
     model: str 
