@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from core.database import engine, Base
 from api.routes.openai_router import router as openai_router
+from api.routes.gemini_router import router as gemini_router
 
 app = FastAPI()
 
@@ -15,3 +16,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(openai_router)
+app.include_router(gemini_router)
