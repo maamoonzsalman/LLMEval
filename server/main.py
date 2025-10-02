@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from core.database import engine, Base
 from api.routes.openai_router import router as openai_router
 from api.routes.gemini_router import router as gemini_router
+from api.routes.claude_router import router as claude_router
 
 app = FastAPI()
 
@@ -17,3 +18,4 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(openai_router)
 app.include_router(gemini_router)
+app.include_router(claude_router)
