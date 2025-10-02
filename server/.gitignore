@@ -1,13 +1,47 @@
-# Environmental variables 
+# Env
 .env
+.env.* 
+!.env.example
 
-# Virtual Environment
-/venv
+# Virtual envs
+venv/
+.venv/
+**/venv/
+**/.venv/
 
-# OS files
-.DS_Store 
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
-# Python cache files
+# Python caches & build
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.dist/
+build/
+dist/
+*.egg-info/
+
+# Tool caches / tests
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage*
+coverage.xml
+htmlcov/
+
+# Logs
+logs/
+*.log
+
+# Local DBs
+*.db
+*.sqlite
+*.sqlite3
+
+# Alembic
+alembic/**/__pycache__/
+# (do NOT ignore migrations)
