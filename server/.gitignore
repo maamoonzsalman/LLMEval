@@ -1,0 +1,13 @@
+# Environmental variables 
+.env
+
+# Virtual Environment
+/venv
+
+# OS files
+.DS_Store 
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
