@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from core.database import engine, Base
+from api.routes.openai_router import router as openai_router
 
 app = FastAPI()
 
@@ -12,3 +13,5 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+app.include_router(openai_router)
