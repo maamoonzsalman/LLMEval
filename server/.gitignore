@@ -45,3 +45,5 @@ logs/
 # Alembic
 alembic/**/__pycache__/
 # (do NOT ignore migrations)
+
+.deepeval

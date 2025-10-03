@@ -5,4 +5,4 @@ from openai import OpenAI
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-openai_model = "gpt-5"
+openai_model = "gpt-4o"
