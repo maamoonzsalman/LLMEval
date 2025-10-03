@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from api.controllers.system_prompt_controller import get_system_prompts, add_system_prompt, change_system_prompt, erase_system_prompt
-from schemas.system_prompts import SystemPromptOut
+from schemas.system_prompts import SystemPromptOut, UpdateSystemPrompt
 from pydantic import BaseModel, Field
 
 router = APIRouter(
@@ -22,12 +22,12 @@ async def fetch_system_prompts():
     data = await get_system_prompts()
     return data
 
-@router.put("/", response_model=SystemPromptOut)
-async def modify_system_prompts(id: int, title: str | None = None, body: str | None = None):
-    data = await change_system_prompt(id, title, body)
+@router.put("/{id}", response_model=SystemPromptOut)
+async def modify_system_prompts(id: int, payload: UpdateSystemPrompt):
+    data = await change_system_prompt(id, payload.title, payload.body)
     return data 
 
-@router.delete("/")
+@router.delete("/{id}")
 async def destroy_system_prompt(id: int):
     data = await erase_system_prompt(id)
     return data
