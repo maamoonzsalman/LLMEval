@@ -1,7 +1,10 @@
 from core.llms.claude_llm import client, claude_model
 from typing import Any, Dict
+import time
 
 def get_claude_output(system_prompt: str, test_prompt: str, max_output_tokens: int = 256) -> Dict[str, Any]:
+    
+    start = time.perf_counter()
     r = client.messages.create(
         model=claude_model,
         messages = [
@@ -10,6 +13,7 @@ def get_claude_output(system_prompt: str, test_prompt: str, max_output_tokens: i
         ],
         max_tokens = max_output_tokens
     )
+    latency_ms = (time.perf_counter() - start) * 1000.0
 
     text = r.content[0].text
 
@@ -26,5 +30,6 @@ def get_claude_output(system_prompt: str, test_prompt: str, max_output_tokens: i
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "total_tokens": total_tokens
-        }
+        },
+        "latency_ms": round(latency_ms, 2),
     }

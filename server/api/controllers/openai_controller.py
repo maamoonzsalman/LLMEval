@@ -1,14 +1,18 @@
 from core.llms.openai_llm import client, openai_model
+import time
 
 def get_openai_output(system_prompt: str, test_prompt: str, max_output_tokens: int = 256):
+    
+    start = time.perf_counter()
     r = client.responses.create(
         model = openai_model,
         input = [
             {"role": "developer", "content": system_prompt},
             {"role": "user", "content": test_prompt},
         ],
-        max_output_tokens=max_output_tokens
+        #max_output_tokens=max_output_tokens
     )
+    latency_ms = (time.perf_counter() - start) * 1000.0
 
     text = getattr(r, "output_text", None)
     if not text:
@@ -34,5 +38,6 @@ def get_openai_output(system_prompt: str, test_prompt: str, max_output_tokens: i
             "input_tokens": getattr(usage, "input_tokens", None) if usage else None,
             "output_tokens": getattr(usage, "output_tokens", None) if usage else None,
             "total_tokens": getattr(usage, "total_tokens", None) if usage else None
-        }
+        },
+        "latency_ms": round(latency_ms, 2)
     }
