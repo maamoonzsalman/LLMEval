@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from api.controllers.test_prompt_controller import create_test_prompt
+from api.controllers.test_prompt_controller import add_test_prompt, get_test_prompts
 from schemas.test_prompts import TestPromptOut, TestPromptCreate
 from pydantic import BaseModel, Field
 
@@ -11,5 +11,10 @@ router = APIRouter(
 
 @router.post("/{system_prompt_id}", response_model=TestPromptOut)
 async def insert_test_prompt(system_prompt_id: int, payload: TestPromptCreate):
-    data = await create_test_prompt(system_prompt_id, payload.body)
+    data = await add_test_prompt(system_prompt_id, payload.body)
+    return data
+
+@router.get("/{system_prompt_id}", response_model = list[TestPromptOut])
+async def fetch_test_prompts(system_prompt_id: int):
+    data = await get_test_prompts(system_prompt_id)
     return data
