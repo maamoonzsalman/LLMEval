@@ -31,3 +31,15 @@ async def update_test_prompt(id: int, body: str | None = None):
 
         return tp
     
+async def delete_test_prompt(id: int):
+    async with SessionLocal() as session:
+        tp = await session.get(TestPrompt, id)
+
+        if tp is None:
+            return False
+        
+        await session.delete(tp)
+        await session.commit()
+        return True
+
+    

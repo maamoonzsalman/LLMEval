@@ -1,4 +1,4 @@
-from utils.test_prompts_utils import create_test_prompt, read_test_prompts, update_test_prompt
+from utils.test_prompts_utils import create_test_prompt, read_test_prompts, update_test_prompt, delete_test_prompt
 
 async def add_test_prompt(system_prompt_id: int, body: str):
     return await create_test_prompt(system_prompt_id, body)
@@ -8,3 +8,6 @@ async def get_test_prompts(system_prompt_id: int):
 
 async def change_test_prompt(id: int, body: str | None = None):
     return await update_test_prompt(id, body)
+
+async def erase_test_prompt(id: int):
+    return await delete_test_prompt(id)
