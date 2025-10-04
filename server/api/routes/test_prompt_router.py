@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from api.controllers.test_prompt_controller import add_test_prompt, get_test_prompts
-from schemas.test_prompts import TestPromptOut, TestPromptCreate
+from api.controllers.test_prompt_controller import add_test_prompt, get_test_prompts, change_test_prompt
+from schemas.test_prompts import TestPromptOut, TestPromptCreate, UpdateTestPrompt
 from pydantic import BaseModel, Field
 
 router = APIRouter(
@@ -17,4 +17,9 @@ async def insert_test_prompt(system_prompt_id: int, payload: TestPromptCreate):
 @router.get("/{system_prompt_id}", response_model = list[TestPromptOut])
 async def fetch_test_prompts(system_prompt_id: int):
     data = await get_test_prompts(system_prompt_id)
+    return data
+
+@router.put("/{id}", response_model=TestPromptOut)
+async def modify_test_prompt(id: int, payload: UpdateTestPrompt):
+    data = await change_test_prompt(id, payload.body)
     return data

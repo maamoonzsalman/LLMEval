@@ -1,12 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
-class TestPromptOut(BaseModel):
-    id: int
-    body: str
-    created_at: datetime
-    model_config = ConfigDict(from_attributes=True)
-
 class SystemPromptOut(BaseModel):
     id: int
     title: str
