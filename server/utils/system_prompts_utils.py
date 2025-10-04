@@ -1,5 +1,5 @@
 from core.database import SessionLocal
-from models.tables import SystemPrompt, TestPrompt
+from models.tables import SystemPrompt
 from sqlalchemy import select, update
 
 async def create_system_prompt(title, body):
