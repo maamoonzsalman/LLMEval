@@ -9,3 +9,6 @@ class TestPromptOut(BaseModel):
     body: str
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
+
+class UpdateTestPrompt(BaseModel):
+    body: str | None = None

@@ -19,3 +19,15 @@ async def read_test_prompts(system_prompt_id):
         )
         return result.scalars().all()
     
+async def update_test_prompt(id: int, body: str | None = None):
+    async with SessionLocal() as session:
+        tp = await session.get(TestPrompt, id)
+
+        if body is not None:
+            tp.body = body
+
+        await session.commit()
+        await session.refresh(tp)
+
+        return tp
+    
