@@ -9,4 +9,13 @@ async def create_test_prompt(system_prompt_id, body):
         await session.commit()
         await session.refresh(tp)
         return tp
-
+    
+async def read_test_prompts(system_prompt_id):
+    async with SessionLocal() as session:
+        result = await session.execute(
+            select(TestPrompt)
+            .where(TestPrompt.system_prompt_id == system_prompt_id)
+            .order_by(TestPrompt.created_at.desc())
+        )
+        return result.scalars().all()
+    
