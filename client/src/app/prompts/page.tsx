@@ -21,6 +21,18 @@ type TestPromptOut = {
   body: string;
 };
 
+type SystemAndTestPrompt = {
+    id: number;
+    title: string;
+    body: string;
+    test_prompts: TestPrompt[];
+}
+
+type TestPrompt = {
+    id: number;
+    body: string;
+}
+
 export default function ManagePrompts() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const [systemPrompt, setSystemPrompt] = useState<SystemPromptOut>({
@@ -31,6 +43,8 @@ export default function ManagePrompts() {
 
   const [systemPrompts, setSystemPrompts] = useState<SystemPrompt[]>([]);
   const [selectedSystemPrompt, setSelectedSystemPrompt] = useState("");
+
+  const [systemAndTestPrompts, setSystemAndTestPrompts] = useState<SystemAndTestPrompt[]>([]);
 
   
   async function handleAddSystemPrompt() {
@@ -58,6 +72,19 @@ export default function ManagePrompts() {
     }
     fetchSystemPrompts();
   }, [apiUrl]);
+
+  useEffect(() => {
+    async function fetchSystemAndTestPrompts() {
+        try {
+            const data = await axios.get(`${apiUrl}/system_prompt/tests`)
+            console.log(data.data)
+            setSystemAndTestPrompts(data.data)
+        } catch (err) {
+            console.error("Error fetching system prompts with test prompts: ", err);
+        }
+    }
+    fetchSystemAndTestPrompts();
+  }, [apiUrl])
 
   async function handleAddTestPrompt() {
     try {
@@ -161,7 +188,28 @@ export default function ManagePrompts() {
             </button>
           </form>
         </div>
+
+        <h1 className="font-bold text-5xl mb-4 text-gray-900"> Existing Prompts </h1>
+        {systemAndTestPrompts.map((prompt) => (
+            <div key={prompt.id}className="items-start space-y-8 flex flex-col w-full max-w-4xl bg-white shadow-md rounded-xl border border-gray-200 p-8" >
+                <p className="font-bold text-2xl">{prompt.body}</p>
+                {prompt.test_prompts.length > 0 && (
+                    <div>
+                        <h2 className="font-semibold text-xl mb-2 text-gray-800">Test Prompts:</h2>
+                        <ul className="list-disc list-inside text-gray-700 space-y-1">
+                            {prompt.test_prompts.map((test_prompt) => (
+                                <li key={test_prompt.id} className="text-lg">{test_prompt.body}</li>
+                            ))}
+                            </ul>
+                    </div>
+                )}
+            </div>
+        ))}
+
       </div>
+
+      
+
     </div>
   );
 }
