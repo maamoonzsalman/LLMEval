@@ -9,13 +9,13 @@ import {
     SelectValue
 } from "@/components/ui/select"
 
-type SystemPrompt = {
+export type SystemPrompt = {
     id: number;
     title: string;
     body: string;
 }
 
-type TestPrompt = {
+export type TestPrompt = {
     id: number;
     body: string;
 }

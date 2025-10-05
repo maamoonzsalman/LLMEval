@@ -35,7 +35,7 @@ export default function Models({
             </div>
 
             {/* Text Output */}
-            <div className="flex-1 overflow-y-auto max-h-[50vh] text-left text-gray-800  whitespace-pre-line border rounded-md p-3">
+            <div className="flex-1 overflow-y-auto max-h-[50vh] text-left text-gray-800 whitespace-pre-line border rounded-md p-3">
               {loading ? (
                 <div className="flex flex-col items-center justify-center space-y-2 py-12">
                   <Loader2 className="h-6 w-6 animate-spin text-gray-500" />
