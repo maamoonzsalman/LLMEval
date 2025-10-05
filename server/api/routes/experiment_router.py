@@ -1,5 +1,6 @@
 import asyncio
 from fastapi import APIRouter, HTTPException
+from schemas.experiments import ExperimentRequest
 from api.controllers.gemini_controller import get_gemini_output
 from api.controllers.openai_controller import get_openai_output
 from api.controllers.claude_controller import get_claude_output
@@ -11,8 +12,11 @@ router = APIRouter(
 )
 
 @router.post("/run")
-async def get_eval_metrics(system_prompt: str, test_prompt: str):
+async def get_eval_metrics(payload: ExperimentRequest):
     try:
+
+        system_prompt = payload.system_prompt
+        test_prompt = payload.test_prompt
 
         gem_task = asyncio.to_thread(get_gemini_output, system_prompt, test_prompt, max_output_tokens=1024)
         oai_task = asyncio.to_thread(get_openai_output, system_prompt, test_prompt, max_output_tokens=1024)
@@ -29,7 +33,7 @@ async def get_eval_metrics(system_prompt: str, test_prompt: str):
         gemini_metrics, openai_metrics, claude_metrics = await asyncio.gather(
             g_metrics_task, o_metrics_task, c_metrics_task
         )
-        
+
         return {
             "scores": {
                 "gemini_score": gemini_metrics,
