@@ -1,6 +1,7 @@
 from core.database import SessionLocal
 from models.tables import SystemPrompt
-from sqlalchemy import select, update
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 async def create_system_prompt(title, body):
     async with SessionLocal() as session:
@@ -13,6 +14,11 @@ async def create_system_prompt(title, body):
 async def read_system_prompts():
    async with SessionLocal() as session:
         result = await session.execute(select(SystemPrompt))
+        return result.scalars().all()
+   
+async def read_system_prompts_with_tests():
+    async with SessionLocal() as session:
+        result = await session.execute(select(SystemPrompt).options(selectinload(SystemPrompt.test_prompts)))
         return result.scalars().all()
    
 async def update_system_prompt(id, title: str | None = None, body: str | None = None):
