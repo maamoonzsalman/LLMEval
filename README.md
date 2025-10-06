@@ -39,6 +39,3 @@ The app uses a **React + Next.js** frontend for dynamic interactivity, a **FastA
 - **Secure Configuration**: Environment-based setup for API keys and database credentials.
 
 ---
-
-## Project Structure
-
