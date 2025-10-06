@@ -54,7 +54,7 @@ export default function ManagePrompts() {
         body: systemPrompt.body,
       });
       console.log("Created System Prompt:", data);
-
+      setSystemPrompts((prev) => [...prev, data.data]);
       setSystemAndTestPrompts((prev) => [
         ...prev,
         { ...data.data, test_prompts: [] },
@@ -123,6 +123,7 @@ export default function ManagePrompts() {
     try {
         const data = await axios.delete(`${apiUrl}/system_prompt/${id}`)
         setSystemAndTestPrompts((prev) => prev.filter((sp) => sp.id !== id));
+        setSystemPrompts((prev) => prev.filter((sp) => sp.id !== id));
         return data
     } catch (err) {
         console.error("Error deleting system prompt: ", err)
