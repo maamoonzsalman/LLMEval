@@ -144,13 +144,15 @@ export default function SelectPrompts({
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select a system prompt"/>
                         </SelectTrigger>
-                        <SelectContent>
-                            {systemPrompts.map((prompt) => (
-                                <SelectItem key={prompt.id} value={prompt.id.toString()}>
-                                    {prompt.title}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
+                        {systemPrompts.length > 0 && (
+                            <SelectContent>
+                                {systemPrompts.map((prompt) => (
+                                    <SelectItem key={prompt.id} value={prompt.id.toString()}>
+                                        {prompt.title}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        )}
                     </Select>
                 </div>
                 
@@ -160,13 +162,16 @@ export default function SelectPrompts({
                         <SelectTrigger className={`w-full ${isTestPromptDisabled ? "opacity-50 cursor-not-allowed" : ""}`}>
                             <SelectValue placeholder="Select a test prompt"/>
                         </SelectTrigger>
-                        <SelectContent>
+                        {selectedSystemPrompt && (
+                            <SelectContent>
                             {testPrompts.map((prompt) => (
                                 <SelectItem key={prompt.id} value={prompt.id.toString()}>
                                     {prompt.body}
                                 </SelectItem>
                             ))}
                         </SelectContent>
+                        )}
+                        
                     </Select>
                 </div>
                 
