@@ -101,6 +101,24 @@ export default function ManagePrompts() {
     }
   }
 
+  async function handleDeleteSystemPrompt(id: number) {
+    try {
+        const data = await axios.delete(`${apiUrl}/system_prompt/${id}`)
+        return data
+    } catch (err) {
+        console.error("Error deleting system prompt: ", err)
+    }
+  }
+
+  async function handleDeleteTestPrompt(id: number) {
+    try {
+        const data = await axios.delete(`${apiUrl}/test_prompt/${id}`)
+        return data 
+    } catch (err) {
+        console.error("Error deleting test prompt: ", err)
+    }
+  }
+
   
   return (
     <div>
@@ -192,15 +210,33 @@ export default function ManagePrompts() {
         <h1 className="font-bold text-5xl mb-4 text-gray-900"> Existing Prompts </h1>
         {systemAndTestPrompts.map((prompt) => (
             <div key={prompt.id}className="items-start space-y-8 flex flex-col w-full max-w-4xl bg-white shadow-md rounded-xl border border-gray-200 p-8" >
+                <button onClick={() => handleDeleteSystemPrompt(prompt.id)} className="hover: cursor-pointer bg-red-500/90 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-md shadow-sm transition-all duration-200 ease-in-out hover:shadow-md active:scale-95 focus:outline-none">
+                    Delete
+                </button>
+                <h1 className="font-bold text-3xl">{prompt.title}</h1>
                 <p className="font-bold text-2xl">{prompt.body}</p>
                 {prompt.test_prompts.length > 0 && (
                     <div>
                         <h2 className="font-semibold text-xl mb-2 text-gray-800">Test Prompts:</h2>
-                        <ul className="list-disc list-inside text-gray-700 space-y-1">
+                        <ul className="list-none text-gray-700 space-y-2">
                             {prompt.test_prompts.map((test_prompt) => (
-                                <li key={test_prompt.id} className="text-lg">{test_prompt.body}</li>
+                                <li
+                                    key={test_prompt.id}
+                                    className="flex items-center space-x-3 text-lg text-gray-800"
+                                >
+                                    <button
+                                        className="hover:cursor-pointer flex items-center justify-center w-6 h-6 rounded-sm bg-red-500/80 hover:bg-red-600 text-white text-sm font-bold shadow-sm transition-all duration-200 ease-in-out hover:scale-105 focus:outline-none"
+                                        title="Delete test prompt"
+                                        onClick={() => handleDeleteTestPrompt(test_prompt.id)}
+                                    >
+                                        ×
+                                    </button>
+
+                                    <span>{test_prompt.body}</span>
+                                </li>
                             ))}
                             </ul>
+
                     </div>
                 )}
             </div>
