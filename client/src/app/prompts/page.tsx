@@ -54,6 +54,12 @@ export default function ManagePrompts() {
         body: systemPrompt.body,
       });
       console.log("Created System Prompt:", data);
+
+      setSystemAndTestPrompts((prev) => [
+        ...prev,
+        { ...data.data, test_prompts: [] },
+      ]);
+
       setSystemPrompt({ title: "", body: "" }); // clear after submit
     } catch (err) {
       console.error("Error creating new system prompt: ", err);
@@ -95,6 +101,18 @@ export default function ManagePrompts() {
         }
       );
       console.log("Created Test Prompt:", data);
+
+      setSystemAndTestPrompts((prev) =>
+        prev.map((sp) =>
+          sp.id.toString() === selectedSystemPrompt
+            ? {
+                ...sp,
+                test_prompts: [...sp.test_prompts, data.data],
+              }
+            : sp
+        )
+      );
+
       setTestPrompt({ body: "" }); 
     } catch (err) {
       console.error("Error adding test prompt: ", err);
@@ -104,15 +122,26 @@ export default function ManagePrompts() {
   async function handleDeleteSystemPrompt(id: number) {
     try {
         const data = await axios.delete(`${apiUrl}/system_prompt/${id}`)
+        setSystemAndTestPrompts((prev) => prev.filter((sp) => sp.id !== id));
         return data
     } catch (err) {
         console.error("Error deleting system prompt: ", err)
     }
   }
 
-  async function handleDeleteTestPrompt(id: number) {
+  async function handleDeleteTestPrompt(id: number, systemPromptId: number,) {
     try {
         const data = await axios.delete(`${apiUrl}/test_prompt/${id}`)
+        setSystemAndTestPrompts((prev) =>
+        prev.map((sp) =>
+          sp.id === systemPromptId
+            ? {
+                ...sp,
+                test_prompts: sp.test_prompts.filter((tp) => tp.id !== id),
+              }
+            : sp
+        )
+      );
         return data 
     } catch (err) {
         console.error("Error deleting test prompt: ", err)
@@ -157,7 +186,7 @@ export default function ManagePrompts() {
               required
             />
             <button
-              className="bg-black text-white rounded-md py-3 font-semibold hover:bg-gray-800 transition"
+              className="hover:cursor-pointer bg-black text-white rounded-md py-3 font-semibold hover:bg-gray-800 transition"
               type="submit"
             >
               Add System Prompt
@@ -199,7 +228,7 @@ export default function ManagePrompts() {
             />
 
             <button
-              className="bg-black text-white rounded-md py-3 font-semibold hover:bg-gray-800 transition"
+              className="hover:cursor-pointer bg-black text-white rounded-md py-3 font-semibold hover:bg-gray-800 transition"
               type="submit"
             >
               Add Test Prompt
@@ -227,7 +256,7 @@ export default function ManagePrompts() {
                                     <button
                                         className="hover:cursor-pointer flex items-center justify-center w-6 h-6 rounded-sm bg-red-500/80 hover:bg-red-600 text-white text-sm font-bold shadow-sm transition-all duration-200 ease-in-out hover:scale-105 focus:outline-none"
                                         title="Delete test prompt"
-                                        onClick={() => handleDeleteTestPrompt(test_prompt.id)}
+                                        onClick={() => handleDeleteTestPrompt(test_prompt.id, prompt.id)}
                                     >
                                         ×
                                     </button>
