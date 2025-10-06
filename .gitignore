@@ -1,0 +1,12 @@
+# Node / Next.js
+client/node_modules/
+client/.next/
+client/out/
+
+# Python / FastAPI
+server/__pycache__/
+server/venv/
+*.pyc
+
+# OS files
+.DS_Store
